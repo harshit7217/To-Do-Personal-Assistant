@@ -14,6 +14,14 @@ public:
     Task* nextTask;
 };
 
+Task * goingToEndPosition(Task* head) {
+    Task * temp = head;
+    while(temp->nextTask != NULL) {
+        temp = temp->nextTask;
+    }
+    return temp;
+}
+
 string enterDescription() {
     string description ;
     cin >> description;
@@ -145,6 +153,37 @@ void editingTask()
 {
 }
 
+Task* insertAtEnd(Task * head, Task* temporary) {
+    Task * temp = new Task();
+    cout << "\t+-------------------------------------------+" << endl;
+    cout << "\tEnter the Task details"<<endl;
+    cout << "\tTitle : ";
+    string title = enterTitle();
+    temp->taskTitle = title;
+    cout << "\tDescription : ";
+    string description = enterDescription();
+    temp->taskDescription = description;
+    cout << "\tTime and Date : "<<endl;
+    tm timeDate = time();
+    temp->taskDateTime = mktime(&timeDate);
+    cout << "\tPriority : "<<endl;
+    string priority = enterPriority();
+    temp->taskPriority = priority;
+    cout << "\tCategory : "<<endl;
+    string category = enterCategory();
+    temp->taskPriority = category;
+    cout << "\tStatus : "<<endl;
+    string status = enterStatus();
+    if(temporary == NULL){
+        head = temp;
+    }else {
+        temporary->nextTask = temp;
+        temp->nextTask = NULL;
+    }
+    return head;
+}
+
+
 Task * insertAtFirst(Task* head) {
     Task * temp = new Task();
     cout << "\t+-------------------------------------------+" << endl;
@@ -168,6 +207,7 @@ Task * insertAtFirst(Task* head) {
     string status = enterStatus();
     if(head == NULL){
         head = temp;
+        temp->nextTask = NULL;
     }else {
         temp->nextTask = head;
         head = temp;
@@ -178,6 +218,7 @@ Task * insertAtFirst(Task* head) {
 void addingTask()
 {
     Task * head = NULL;
+    Task * temp = NULL;
     while (true)
     {
 
@@ -197,10 +238,12 @@ void addingTask()
             break;
         case 2:
             break;
-        case 3:
+        case 3: 
+            temp = goingToEndPosition(head);
+            head = insertAtEnd(head, temp);
             break;
         case 4:
-            return;
+            return ;
         default:
             cout << "\t+-------------------------------------------+" << endl;
             cout << "\tYou Choice the wrong option " << endl;
