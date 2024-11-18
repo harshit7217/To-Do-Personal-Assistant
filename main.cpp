@@ -18,6 +18,7 @@ public:
 string enterDescription()
 {
     string description;
+    cout << "\t";
     getline(cin, description);
     return description;
 }
@@ -25,6 +26,7 @@ string enterDescription()
 string enterTitle()
 {
     string title;
+    cout << "\t";
     getline(cin, title);
     getline(cin, title);
     return title;
@@ -413,7 +415,7 @@ void simpleTaskList(Task *head)
     cout << "\tIf you want to view the full details of particular task  : " << endl;
     cout << "\t+-------------------------------------------+" << endl;
     cout << endl;
-    int checking ;
+    int checking;
     cout << "\tChoice the option :-" << endl;
     cout << "\t1. To see the task." << endl;
     cout << "\t2. Not see the task" << endl;
@@ -461,34 +463,44 @@ string deletePositionValue()
     getline(cin, value);
     return value;
 }
-Task * deleteFirst(Task * head) {
+Task *deleteFirst(Task *head)
+{
     head = head->nextTask;
     return head;
 }
 
-void deleting(Task * previous) {
+void deleting(Task *previous)
+{
     previous->nextTask = previous->nextTask->nextTask;
 }
 
-void deletingEnd(Task * previous) {
+void deletingEnd(Task *previous)
+{
     previous->nextTask = NULL;
 }
 
 Task *deletingTask(Task *head)
 {
     string title = deletePositionValue();
-    Task * temp = head, * previous;
+    Task *temp = head, *previous;
     int count = 0;
-    while(temp != NULL) {
+    while (temp != NULL)
+    {
         count++;
-        if(temp->taskTitle == title) {
-            if(count == 1) {
+        if (temp->taskTitle == title)
+        {
+            if (count == 1)
+            {
                 head = deleteFirst(head);
                 return head;
-            }else if(temp->nextTask == NULL) {
+            }
+            else if (temp->nextTask == NULL)
+            {
                 deletingEnd(previous);
                 return head;
-            }else {
+            }
+            else
+            {
                 deleting(previous);
                 return head;
             }
@@ -498,21 +510,161 @@ Task *deletingTask(Task *head)
     }
 }
 
-void markTask(Task * head) {
+void markTask(Task *head)
+{
     string task;
     cout << "\t+-------------------------------------------+" << endl;
     cout << "\tEnter the task title to mark as completed :-" << endl;
+    cout << "\t+-------------------------------------------+" << endl;
     cout << "\t";
     getline(cin, task);
     getline(cin, task);
-    Task * temp = head;
-    while(temp != NULL) {
-        if(temp->taskTitle == task) {
+    Task *temp = head;
+    while (temp != NULL)
+    {
+        if (temp->taskTitle == task)
+        {
             temp->taskStatus = "Completed";
             return;
         }
         temp = temp->nextTask;
     }
+    cout << "\t+-------------------------------------------+" << endl;
+    cout << "\tYour task not find it" << endl;
+    cout << "\tChoice the option :-" << endl;
+    cout << "\t1. Try Again" << endl;
+    cout << "\t2. Exit" << endl;
+    cout << "\t+-------------------------------------------+" << endl;
+    int check;
+    cout << "\t";
+    cin >> check;
+    if (check == 1)
+    {
+        markTask(head);
+    }
+    else if (check == 2)
+    {
+        return;
+    }
+    else
+    {
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tYou choice the wrong option" << endl;
+        cout << "\tNow, you again go to the mark option" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
+        markTask(head);
+    }
+}
+
+string editEnterDescription()
+{
+    string description;
+    cout << "\t";
+    getline(cin, description);
+    getline(cin, description);
+    return description;
+}
+
+void edit(Task *head)
+{
+    cout << "\t+-------------------------------------------+" << endl;
+    cout << "\tWhat do you want to edit" << endl;
+    cout << "\t\t1. Title" << endl;
+    cout << "\t\t2. Description" << endl;
+    cout << "\t\t3. Date and Time" << endl;
+    cout << "\t\t4. Priority" << endl;
+    cout << "\t\t5. Category" << endl;
+    cout << "\t\t6. Status" << endl;
+    cout << "\t+-------------------------------------------+" << endl;
+    int check;
+    cout << "\t";
+    cin >> check;
+    string title, description, priority, category, status;
+    tm dateTime;
+    switch(check)
+    {
+    case 1:
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tEnter your title" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\t";
+        title = enterTitle();
+        head->taskTitle = title;
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tYour Title successfully edited" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
+        return;
+    case 2:
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tEnter your Description" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\t";
+        description = editEnterDescription();
+        head->taskDescription = description;
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tYour Description successfully edited" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
+        return;
+    case 3: 
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tEnter your Date and Time" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\t";
+        dateTime = time();
+        head->taskDateTime = mktime(&dateTime);
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tYour Date and Time successfully edited" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
+        return;
+    case 4: 
+        priority = enterPriority();
+        head->taskPriority = priority;
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tYour Priority successfully edited" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
+        return;
+    case 5:
+        category = enterCategory();
+        head->taskCategory = category;
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tYour Category successfully edited" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
+        return;
+    case 6:
+        status = enterStatus();
+        head->taskStatus = status;
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tYour Status successfully edited" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
+        return;
+    default : 
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tYou Choose the wrong option" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
+        return;
+    }
+}
+
+void editingTask(Task *head)
+{
+    string task;
+    cout << "\t+-------------------------------------------+" << endl;
+    cout << "\tEnter the task title to editing a task :-" << endl;
+    cout << "\t";
+    getline(cin, task);
+    getline(cin, task);
+    Task *temp = head;
+    while (temp != NULL)
+    {
+        if (temp->taskTitle == task)
+        {
+            edit(temp);
+        }
+        temp = temp->nextTask;
+    }
+    cout << "\t+-------------------------------------------+" << endl;
+    cout << "\tYou write the wrong title" << endl;
+    cout << "\t+-------------------------------------------+" << endl;
 }
 
 Task *toDoMenu(Task *head)
