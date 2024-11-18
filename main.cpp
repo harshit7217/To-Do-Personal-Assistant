@@ -167,9 +167,10 @@ Task *insertAtFirst(Task *head)
         temp->taskPriority = priority;
         cout << "\tCategory : " << endl;
         string category = enterCategory();
-        temp->taskPriority = category;
+        temp->taskCategory = category;
         cout << "\tStatus : " << endl;
         string status = enterStatus();
+        temp->taskStatus = status;
 
         head = temp;
         temp->nextTask = NULL;
@@ -192,9 +193,10 @@ Task *insertAtFirst(Task *head)
         temp->taskPriority = priority;
         cout << "\tCategory : " << endl;
         string category = enterCategory();
-        temp->taskPriority = category;
+        temp->taskCategory = category;
         cout << "\tStatus : " << endl;
         string status = enterStatus();
+        temp->taskStatus = status;
 
         temp->nextTask = head;
         head = temp;
@@ -204,7 +206,8 @@ Task *insertAtFirst(Task *head)
 
 Task *goingToEndPosition(Task *head)
 {
-    if(head == NULL) {
+    if (head == NULL)
+    {
         return head;
     }
     Task *temp = head;
@@ -239,9 +242,10 @@ Task *insertAtEnd(Task *head, Task *temporary)
     temp->taskPriority = priority;
     cout << "\tCategory : " << endl;
     string category = enterCategory();
-    temp->taskPriority = category;
+    temp->taskCategory = category;
     cout << "\tStatus : " << endl;
     string status = enterStatus();
+    temp->taskStatus = status;
 
     temporary->nextTask = temp;
     temp->nextTask = NULL;
@@ -276,40 +280,45 @@ Task *checkTaskPosition(Task *head, int value)
 
 Task *insertAtPosition(Task *head)
 {
-        int position = insertPositionValue();
-        Task* check = checkTaskPosition(head, position);
-        if(position == 1) {
-            head = insertAtFirst(head);
-            return head;
-        }else if(check->nextTask == NULL) {
-            head = insertAtEnd(head, check);
-            return head;
-        }else if (check != NULL)
-        {
-            Task *temp = new Task();
-            cout << "\t+-------------------------------------------+" << endl;
-            cout << "\tEnter the Task details" << endl;
-            cout << "\tTitle : ";
-            string title = enterTitle();
-            temp->taskTitle = title;
-            cout << "\tDescription : ";
-            string description = enterDescription();
-            temp->taskDescription = description;
-            cout << "\tTime and Date : " << endl;
-            tm timeDate = time();
-            temp->taskDateTime = mktime(&timeDate);
-            cout << "\tPriority : " << endl;
-            string priority = enterPriority();
-            temp->taskPriority = priority;
-            cout << "\tCategory : " << endl;
-            string category = enterCategory();
-            temp->taskPriority = category;
-            cout << "\tStatus : " << endl;
-            string status = enterStatus();
+    int position = insertPositionValue();
+    Task *check = checkTaskPosition(head, position);
+    if (position == 1)
+    {
+        head = insertAtFirst(head);
+        return head;
+    }
+    else if (check->nextTask == NULL)
+    {
+        head = insertAtEnd(head, check);
+        return head;
+    }
+    else if (check != NULL)
+    {
+        Task *temp = new Task();
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tEnter the Task details" << endl;
+        cout << "\tTitle : ";
+        string title = enterTitle();
+        temp->taskTitle = title;
+        cout << "\tDescription : ";
+        string description = enterDescription();
+        temp->taskDescription = description;
+        cout << "\tTime and Date : " << endl;
+        tm timeDate = time();
+        temp->taskDateTime = mktime(&timeDate);
+        cout << "\tPriority : " << endl;
+        string priority = enterPriority();
+        temp->taskPriority = priority;
+        cout << "\tCategory : " << endl;
+        string category = enterCategory();
+        temp->taskCategory = category;
+        cout << "\tStatus : " << endl;
+        string status = enterStatus();
+        temp->taskStatus = status;
 
-            temp->nextTask = check->nextTask;
-            check->nextTask = temp;
-        }
+        temp->nextTask = check->nextTask;
+        check->nextTask = temp;
+    }
     return head;
 }
 
@@ -332,13 +341,22 @@ Task *addingTask(Task *head)
         {
         case 1:
             head = insertAtFirst(head);
+            cout << "\t+-------------------------------------------+" << endl;
+            cout << "\tCongurtulations, Your task inserted successfully" << endl;
+            cout << "\t+-------------------------------------------+" << endl;
             break;
         case 2:
             head = insertAtPosition(head);
+            cout << "\t+-------------------------------------------+" << endl;
+            cout << "\tCongurtulations, Your task inserted successfully" << endl;
+            cout << "\t+-------------------------------------------+" << endl;
             break;
         case 3:
             temp = goingToEndPosition(head);
             head = insertAtEnd(head, temp);
+            cout << "\t+-------------------------------------------+" << endl;
+            cout << "\tCongurtulations, Your task inserted successfully" << endl;
+            cout << "\t+-------------------------------------------+" << endl;
             break;
         case 4:
             return head;
@@ -351,6 +369,32 @@ Task *addingTask(Task *head)
     }
 }
 
+bool fullDetials(Task *head)
+{
+    string title;
+    cout << "\t";
+    getline(cin, title);
+    getline(cin, title);
+    Task *temp = head;
+    while (temp != NULL)
+    {
+        if (temp->taskTitle == title)
+        {
+            cout << "\t+-------------------------------------------+" << endl;
+            cout << "\t\t" << "Title : " << temp->taskTitle << endl;
+            cout << "\t\t" << "Description : " << temp->taskDescription << endl;
+            cout << "\t\t" << "Date & Time : " << put_time(localtime(&temp->taskDateTime), "%Y-%m-%d %H:%M:%S") << endl;
+            cout << "\t\t" << "Priority : " << temp->taskPriority << endl;
+            cout << "\t\t" << "Category : " << temp->taskCategory << endl;
+            cout << "\t\t" << "Status : " << temp->taskStatus << endl;
+            cout << "\t+-------------------------------------------+" << endl;
+            return false;
+        }
+        temp = temp->nextTask;
+    }
+    return true;
+}
+
 void simpleTaskList(Task *head)
 {
     Task *temp = head;
@@ -358,42 +402,118 @@ void simpleTaskList(Task *head)
     while (temp != NULL)
     {
         count++;
-        cout << "\t" << count << ".\t" << temp->taskTitle << endl;
+        cout << "\t" << count << ".\n\t\t" << "Title : " << temp->taskTitle << endl;
         temp = temp->nextTask;
+    }
+    cout << "\t+-------------------------------------------+" << endl;
+    cout << "\tCongurtulations, You view the task successfully" << endl;
+    cout << "\t+-------------------------------------------+" << endl;
+    cout << endl;
+    cout << "\t+-------------------------------------------+" << endl;
+    cout << "\tIf you want to view the full details of particular task  : " << endl;
+    cout << "\t+-------------------------------------------+" << endl;
+    cout << endl;
+    int checking ;
+    cout << "\tChoice the option :-" << endl;
+    cout << "\t1. To see the task." << endl;
+    cout << "\t2. Not see the task" << endl;
+    cout << "\t";
+    cin >> checking;
+    while (checking == 1)
+    {
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tEnter the task title" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
+        bool check = fullDetials(head);
+        if (check == 0)
+        {
+            cout << "\t+-------------------------------------------+" << endl;
+            cout << "\tIf you want to view the another task details : " << endl;
+            cout << "\tChoose option" << endl;
+            cout << "\t1. Again view the task." << endl;
+            cout << "\t2. Exit" << endl;
+            cout << "\t+-------------------------------------------+" << endl;
+            cout << "\t";
+            cin >> checking;
+        }
+        else
+        {
+            cout << "\t+-------------------------------------------+" << endl;
+            cout << "\tYou choice the wrong task i.e. not in the task list : " << endl;
+            cout << "\tChoose option" << endl;
+            cout << "\t1. Again enter the task." << endl;
+            cout << "\t2. Exit" << endl;
+            cout << "\t+-------------------------------------------+" << endl;
+            cout << "\t";
+            cin >> checking;
+        }
     }
 }
 
-int deletePositionValue()
+string deletePositionValue()
 {
     cout << "\t+-------------------------------------------+" << endl;
-    cout << "\tEnter the position value to delete the task : " << endl;
-    int value;
+    cout << "\tEnter the task title to delete the task : " << endl;
+    cout << "\t+-------------------------------------------+" << endl;
+    string value;
     cout << "\t";
-    cin >> value;
+    getline(cin, value);
+    getline(cin, value);
     return value;
 }
-
-Task* deleteFirst(Task * head) {
+Task * deleteFirst(Task * head) {
     head = head->nextTask;
     return head;
 }
 
-void deletePosition(Task* temp) {
-    temp = temp->nextTask;
+void deleting(Task * previous) {
+    previous->nextTask = previous->nextTask->nextTask;
 }
 
-Task* deletingTask(Task* head) {
-    int position = deletePositionValue();
-    Task* check = checkTaskPosition(head, position);
-    if(position == 1) {
-        head = deleteFirst(head);
-        return head;
-    }else {
-        deletePosition(check);
+void deletingEnd(Task * previous) {
+    previous->nextTask = NULL;
+}
+
+Task *deletingTask(Task *head)
+{
+    string title = deletePositionValue();
+    Task * temp = head, * previous;
+    int count = 0;
+    while(temp != NULL) {
+        count++;
+        if(temp->taskTitle == title) {
+            if(count == 1) {
+                head = deleteFirst(head);
+                return head;
+            }else if(temp->nextTask == NULL) {
+                deletingEnd(previous);
+                return head;
+            }else {
+                deleting(previous);
+                return head;
+            }
+        }
+        previous = temp;
+        temp = temp->nextTask;
     }
-    return head;
 }
 
+void markTask(Task * head) {
+    string task;
+    cout << "\t+-------------------------------------------+" << endl;
+    cout << "\tEnter the task title to mark as completed :-" << endl;
+    cout << "\t";
+    getline(cin, task);
+    getline(cin, task);
+    Task * temp = head;
+    while(temp != NULL) {
+        if(temp->taskTitle == task) {
+            temp->taskStatus = "Completed";
+            return;
+        }
+        temp = temp->nextTask;
+    }
+}
 
 Task *toDoMenu(Task *head)
 {
@@ -410,19 +530,26 @@ Task *toDoMenu(Task *head)
     cout << "\t";
     int choice;
     cin >> choice;
+    cout << "\t+-------------------------------------------+" << endl;
     switch (choice)
     {
     case 1:
         head = addingTask(head);
         break;
     case 2:
-        // editingTask();
+        editingTask(head);
         break;
     case 3:
         head = deletingTask(head);
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tCongurtulations, Your task deleted successfully" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
         break;
     case 4:
-        // markTask();
+        markTask(head);
+        cout << "\t+-------------------------------------------+" << endl;
+        cout << "\tCongurtulations, Your task mark as completed successfully" << endl;
+        cout << "\t+-------------------------------------------+" << endl;
         break;
     case 5:
         simpleTaskList(head);
