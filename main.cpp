@@ -8,7 +8,7 @@ class Task
 public:
     string taskTitle;
     string taskDescription;
-    time_t taskDateTime;
+    string taskDateTime;
     string taskPriority;
     string taskCategory;
     string taskStatus;
@@ -58,6 +58,7 @@ string enterStatus()
         cout << "\tEnter your status" << endl;
         cout << "\t";
         getline(cin, status);
+        getline(cin, status);
         cout << "\t+-------------------------------------------+" << endl;
         return status;
     }
@@ -87,8 +88,9 @@ string enterCategory()
         return "Urgent";
     default:
         cout << "\t+-------------------------------------------+" << endl;
-        cout << "Enter your task Category" << endl;
+        cout << "\tEnter your task Category" << endl;
         cout << "\t";
+        getline(cin, category);
         getline(cin, category);
         cout << "\t+-------------------------------------------+" << endl;
         return category;
@@ -122,31 +124,19 @@ string enterPriority()
         cout << "\tEnter your priority" << endl;
         cout << "\t";
         getline(cin, priority);
+        getline(cin, priority);
         cout << "\t+-------------------------------------------+" << endl;
         return priority;
     }
     return priority;
 }
 
-tm time()
-{
-    tm timeDate = {};
-    cout << "\t+-------------------------------------------+" << endl;
-    cout << "\tEnter Year : ";
-    cin >> timeDate.tm_year;
-    cout << "\tEnter Month : ";
-    cin >> timeDate.tm_mon;
-    cout << "\tEnter Date : ";
-    cin >> timeDate.tm_mday;
-    cout << "\tEnter Hour : ";
-    cin >> timeDate.tm_hour;
-    cout << "\tEnter Minute : ";
-    cin >> timeDate.tm_min;
-    cout << "\tEnter Second : ";
-    cin >> timeDate.tm_sec;
-    cout << "\t+-------------------------------------------+" << endl;
-    return timeDate;
+string getCurrentDateTime() {
+        auto now = std::chrono::system_clock::now();
+        std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+        return std::ctime(&currentTime); // Convert to string
 }
+
 
 Task *insertAtFirst(Task *head)
 {
@@ -161,9 +151,6 @@ Task *insertAtFirst(Task *head)
         cout << "\tDescription : ";
         string description = enterDescription();
         temp->taskDescription = description;
-        cout << "\tTime and Date : " << endl;
-        tm timeDate = time();
-        temp->taskDateTime = mktime(&timeDate);
         cout << "\tPriority : " << endl;
         string priority = enterPriority();
         temp->taskPriority = priority;
@@ -173,6 +160,8 @@ Task *insertAtFirst(Task *head)
         cout << "\tStatus : " << endl;
         string status = enterStatus();
         temp->taskStatus = status;
+        string date = getCurrentDateTime();
+        temp->taskDateTime = date;
 
         head = temp;
         temp->nextTask = NULL;
@@ -187,9 +176,6 @@ Task *insertAtFirst(Task *head)
         cout << "\tDescription : ";
         string description = enterDescription();
         temp->taskDescription = description;
-        cout << "\tTime and Date : " << endl;
-        tm timeDate = time();
-        temp->taskDateTime = mktime(&timeDate);
         cout << "\tPriority : " << endl;
         string priority = enterPriority();
         temp->taskPriority = priority;
@@ -199,6 +185,8 @@ Task *insertAtFirst(Task *head)
         cout << "\tStatus : " << endl;
         string status = enterStatus();
         temp->taskStatus = status;
+        string date = getCurrentDateTime();
+        temp->taskDateTime = date;
 
         temp->nextTask = head;
         head = temp;
@@ -236,9 +224,6 @@ Task *insertAtEnd(Task *head, Task *temporary)
     cout << "\tDescription : ";
     string description = enterDescription();
     temp->taskDescription = description;
-    cout << "\tTime and Date : " << endl;
-    tm timeDate = time();
-    temp->taskDateTime = mktime(&timeDate);
     cout << "\tPriority : " << endl;
     string priority = enterPriority();
     temp->taskPriority = priority;
@@ -248,6 +233,8 @@ Task *insertAtEnd(Task *head, Task *temporary)
     cout << "\tStatus : " << endl;
     string status = enterStatus();
     temp->taskStatus = status;
+    string date = getCurrentDateTime();
+    temp->taskDateTime = date;
 
     temporary->nextTask = temp;
     temp->nextTask = NULL;
@@ -305,9 +292,6 @@ Task *insertAtPosition(Task *head)
         cout << "\tDescription : ";
         string description = enterDescription();
         temp->taskDescription = description;
-        cout << "\tTime and Date : " << endl;
-        tm timeDate = time();
-        temp->taskDateTime = mktime(&timeDate);
         cout << "\tPriority : " << endl;
         string priority = enterPriority();
         temp->taskPriority = priority;
@@ -317,6 +301,8 @@ Task *insertAtPosition(Task *head)
         cout << "\tStatus : " << endl;
         string status = enterStatus();
         temp->taskStatus = status;
+        string date = getCurrentDateTime();
+        temp->taskDateTime = date;
 
         temp->nextTask = check->nextTask;
         check->nextTask = temp;
@@ -385,7 +371,7 @@ bool fullDetials(Task *head)
             cout << "\t+-------------------------------------------+" << endl;
             cout << "\t\t" << "Title : " << temp->taskTitle << endl;
             cout << "\t\t" << "Description : " << temp->taskDescription << endl;
-            cout << "\t\t" << "Date & Time : " << put_time(localtime(&temp->taskDateTime), "%Y-%m-%d %H:%M:%S") << endl;
+            cout << "\t\t" << "Date & Time : " << temp->taskDateTime << endl;
             cout << "\t\t" << "Priority : " << temp->taskPriority << endl;
             cout << "\t\t" << "Category : " << temp->taskCategory << endl;
             cout << "\t\t" << "Status : " << temp->taskStatus << endl;
@@ -580,7 +566,7 @@ void edit(Task *head)
     cout << "\t";
     cin >> check;
     string title, description, priority, category, status;
-    tm dateTime;
+    string dateTime;
     switch(check)
     {
     case 1:
@@ -607,11 +593,11 @@ void edit(Task *head)
         return;
     case 3: 
         cout << "\t+-------------------------------------------+" << endl;
-        cout << "\tEnter your Date and Time" << endl;
+        cout << "\tYour Date and Time" << endl;
         cout << "\t+-------------------------------------------+" << endl;
         cout << "\t";
-        dateTime = time();
-        head->taskDateTime = mktime(&dateTime);
+        dateTime = getCurrentDateTime();
+        head->taskDateTime = dateTime;
         cout << "\t+-------------------------------------------+" << endl;
         cout << "\tYour Date and Time successfully edited" << endl;
         cout << "\t+-------------------------------------------+" << endl;
